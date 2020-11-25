@@ -68,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "50px",
     marginRight: "25px",
     height: "45px",
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.light,
+    },
   },
   logoContainer: {
     padding: 0,
@@ -154,7 +157,7 @@ const Header = ({ value, setValue, selectedIndex, setSelectedIndex }) => {
       selectedIndex: 1,
     },
     {
-      name: "Mobile App Development",
+      name: "iOS/Android Development",
       link: "/mobileapps",
       activeIndex: 1,
       selectedIndex: 2,
@@ -194,6 +197,10 @@ const Header = ({ value, setValue, selectedIndex, setSelectedIndex }) => {
             }
           }
           break;
+
+        case "/estimate":
+          setValue(5);
+          break;
         default:
           break;
       }
@@ -228,6 +235,7 @@ const Header = ({ value, setValue, selectedIndex, setSelectedIndex }) => {
         component={Link}
         to="/estimate"
         className={classes.button}
+        onClick={() => setValue(5)}
       >
         Free Estimate
       </Button>

@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
     margin: "3em",
   },
   icon: {
-    height: "3em",
-    width: "3em",
+    height: "2.5em",
+    width: "2.5em",
     [theme.breakpoints.down("xs")]: {
       height: "2em",
       width: "2em",
@@ -113,7 +113,7 @@ const Footer = ({ setValue, setSelectedIndex }) => {
                   setSelectedIndex(2);
                 }}
               >
-                Mobile App Development
+                iOS/Android Development
               </Grid>
               <Grid
                 item
