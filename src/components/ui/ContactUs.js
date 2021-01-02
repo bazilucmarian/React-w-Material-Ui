@@ -9,6 +9,8 @@ import TextField from "@material-ui/core/TextField";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
 
 import background from "../../assets/background.jpg";
 import mobileBackground from "../../assets/mobileBackground.jpg";
@@ -16,6 +18,8 @@ import phoneIcon from "../../assets/phone.svg";
 import emailIcon from "../../assets/email.svg";
 import airplane from "../../assets/send.svg";
 import cancel from "../../assets/cancel.svg";
+
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   background: {
@@ -86,7 +90,6 @@ const Contact = ({ setValue, setSelectedIndex }) => {
   const matchesMD = useMediaQuery(theme.breakpoints.down("md"));
 
   const [name, setName] = useState("");
-  // const [nameHelper, setNameHelper] = useState("");
   const [email, setEmail] = useState("");
   const [emailHelper, setEmailHelper] = useState("");
   const [phone, setPhone] = useState("");
@@ -95,6 +98,17 @@ const Contact = ({ setValue, setSelectedIndex }) => {
   // const [messageHelper, setMessageHelper] = useState("");
 
   const [open, setOpen] = useState(false);
+
+  // progress bar
+
+  const [loading, setLoading] = useState(false);
+
+  // sbackbar
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    backgroundColor: "",
+  });
 
   const onChange = (e) => {
     switch (e.target.id) {
@@ -127,6 +141,64 @@ const Contact = ({ setValue, setSelectedIndex }) => {
         break;
     }
   };
+
+  const onConfirm = () => {
+    setLoading(true);
+    axios
+      .get(
+        "https://us-central1-material-ui-course-a2110.cloudfunctions.net/sendMail",
+        {
+          params: {
+            name: name,
+            email: email,
+            phone: phone,
+            message: message,
+          },
+        }
+      )
+      .then((res) => {
+        setLoading(false);
+        setOpen(false);
+        setName("");
+        setEmail("");
+        setPhone("");
+        setMessage("");
+        setAlert({
+          open: true,
+          message: "Message sent Successfully",
+          backgroundColor: "#4BB543",
+        });
+      })
+      .catch((err) => {
+        setLoading(false);
+        setAlert({
+          open: true,
+          message: "Something went wrong, please try again",
+          backgroundColor: "#FF3232",
+        });
+      });
+  };
+
+  const buttonContent = (
+    <>
+      {" "}
+      Send Message
+      {name.length === 0 ||
+      message.length === 0 ||
+      phone.length === 0 ||
+      email.length === 0 ? (
+        <img
+          style={{
+            marginLeft: "1em",
+          }}
+          src={cancel}
+          alt="cancel message"
+        />
+      ) : (
+        <img src={airplane} alt="send message" style={{ marginLeft: "1em" }} />
+      )}
+    </>
+  );
 
   return (
     <Grid container direction="row">
@@ -175,9 +247,9 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                 >
                   <a
                     style={{ textDecoration: "none", color: "inherit" }}
-                    href="tel:(555) 555-555"
+                    href="tel:(0757) 357 597"
                   >
-                    (555) 555-555
+                    (0757) 357 597
                   </a>
                 </Typography>
               </Grid>
@@ -250,6 +322,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                 id="message"
                 name="message"
                 multiline
+                placeholder="Tell us more about your project"
                 rows={10}
                 onChange={(e) => setMessage(e.target.value)}
                 className={classes.message}
@@ -257,7 +330,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
             </Grid>
             <Grid item container justify="center" style={{ marginTop: "2em" }}>
               <Button
-                variant="container"
+                variant="contained"
                 onClick={() => setOpen(true)}
                 disabled={
                   name.length === 0 ||
@@ -267,27 +340,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                 }
                 className={classes.sendButton}
               >
-                Send Message
-                {name.length === 0 ||
-                message.length === 0 ||
-                phone.length === 0 ||
-                email.length === 0 ? (
-                  <img
-                    src={cancel}
-                    alt="cancel message"
-                    width="25"
-                    height="25"
-                    style={{
-                      marginLeft: "1em",
-                    }}
-                  />
-                ) : (
-                  <img
-                    src={airplane}
-                    alt="send message"
-                    style={{ marginLeft: "1em" }}
-                  />
-                )}
+                {buttonContent}
               </Button>
             </Grid>
           </Grid>
@@ -297,7 +350,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
       <Dialog
         style={{ zIndex: "1306" }}
         open={open}
-        fullScreen={matchesXS}
+        fullScreen={matchesSM}
         onClose={() => setOpen(false)}
         PaperProps={{
           style: {
@@ -369,7 +422,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                 />
               </Grid>
             </Grid>
-            <Grid item style={{ maxWidth: matchesXS ? "100%" : "20em" }}>
+            <Grid item style={{ maxWidth: matchesSM ? "100%" : "20em" }}>
               <TextField
                 fullWidth
                 InputProps={{ disableUnderline: true }}
@@ -377,6 +430,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                 id="message"
                 name="message"
                 multiline
+                placeholder="Tell us more about your project"
                 rows={10}
                 onChange={(e) => setMessage(e.target.value)}
                 className={classes.message}
@@ -399,7 +453,7 @@ const Contact = ({ setValue, setSelectedIndex }) => {
               {" "}
               <Button
                 variant="container"
-                onClick={() => setOpen(true)}
+                onClick={onConfirm}
                 disabled={
                   name.length === 0 ||
                   message.length === 0 ||
@@ -408,33 +462,24 @@ const Contact = ({ setValue, setSelectedIndex }) => {
                 }
                 className={classes.sendButton}
               >
-                Send Message
-                {name.length === 0 ||
-                message.length === 0 ||
-                phone.length === 0 ||
-                email.length === 0 ? (
-                  <img
-                    src={cancel}
-                    alt="cancel message"
-                    width="25"
-                    height="25"
-                    style={{
-                      marginLeft: "1em",
-                    }}
-                  />
-                ) : (
-                  <img
-                    src={airplane}
-                    alt="send message"
-                    style={{ marginLeft: "1em" }}
-                  />
-                )}
+                {loading ? <CircularProgress size={30} /> : buttonContent}
               </Button>
             </Grid>
           </Grid>
         </DialogContent>
       </Dialog>
 
+      {/* snackbar */}
+      <Snackbar
+        open={alert.open}
+        message={alert.message}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        ContentProps={{ style: { backgroundColor: alert.backgroundColor } }}
+        onClose={() => setAlert({ ...alert, open: false })}
+        autoHideDuration={4000}
+      ></Snackbar>
+
+      {/* snackbar */}
       <Grid
         item
         container

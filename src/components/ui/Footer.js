@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import Grid from "@material-ui/core/Grid";
-import footerAdornment from "../../assets/Footer Adornment.svg";
+import footerAdornment from "../../assets/footerAdornment.svg";
 import facebook from "../../assets/facebook.svg";
 import twitter from "../../assets/twitter.svg";
 import instagram from "../../assets/instagram.svg";
@@ -229,7 +229,7 @@ const Footer = ({ setValue, setSelectedIndex }) => {
         <Grid
           item
           component={"a"}
-          href="http://www.facebook.com"
+          href="https://www.facebook.com/baziluc.marian"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -247,7 +247,7 @@ const Footer = ({ setValue, setSelectedIndex }) => {
         <Grid
           item
           component={"a"}
-          href="http://www.instagram.com"
+          href="https://www.instagram.com/bazilucmarian/"
           rel="noopener noreferrer"
           target="_blank"
         >

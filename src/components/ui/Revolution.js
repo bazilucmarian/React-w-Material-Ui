@@ -730,7 +730,7 @@ const Revolution = () => {
           <img
             src={maintain}
             alt="maintain"
-            style={{ width: "100%", maxWidth: 100 }}
+            style={{ width: "100%", maxWidth: 200 }}
           />
         </Grid>
       </Grid>

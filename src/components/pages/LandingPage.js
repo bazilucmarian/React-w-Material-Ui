@@ -13,7 +13,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CallToAction from "../ui/CallToAction";
 
 import animationData from "../../animations/landinganimation/data";
-import customSoftwareIcon from "../../assets/Custom Software Icon.svg";
+import customSoftwareIcon from "../../assets/customSoftware.svg";
 import mobileAppsIcon from "../../assets/mobileIcon.svg";
 import websitesIcon from "../../assets/websiteIcon.svg";
 import revolutionBackground from "../../assets/repeatingBackground.svg";
@@ -150,7 +150,7 @@ const LandingPage = ({ setValue, setSelectedIndex }) => {
         <Grid container direction="row" justify="flex-end" alignItems="center">
           <Grid item sm className={classes.heroTextContainer}>
             <Typography variant="h2" align="center">
-              Bringing West Coast Technology <br /> to the Midwest
+              Bringing the best technology <br /> in town
             </Typography>
             <Grid
               container
